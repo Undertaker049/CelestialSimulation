@@ -7,7 +7,7 @@ class StellarSystem {
     private val objects = mutableListOf<CelestialObject>()
     private val G = 6.67430e-11
     private val c = 299792458.0
-    private val spatialGrid = SpatialGrid(1e12, 10) // 10x10 grid, 1e12 meters per cell
+    private val spatialGrid = SpatialGrid(1e12, 10)
 
     fun update(deltaTime: Double, executor: ExecutorService) {
         val forces = calculateForces(executor)
@@ -16,7 +16,7 @@ class StellarSystem {
                 obj.update(forces[obj] ?: Vector3D.ZERO, deltaTime)
             }
         }
-        futures.forEach { it.get() } // Wait for all updates to complete
+        futures.forEach { it.get() }
 
         objects.filterIsInstance<Planet>().forEach { it.updateMoons(deltaTime) }
         applyPerturbations()

@@ -153,10 +153,7 @@ class StellarSimulation(private val stellarSystem: StellarSystem) {
             val sunX = centerX + (sun.position.x - cameraX) * scaleFactor
             val sunY = centerY + (sun.position.y - cameraY) * scaleFactor
 
-            // Main asteroid belt
             drawAsteroidBelt(gc, sunX, sunY, 2.2, 3.2, 10000, Color.BROWN.deriveColor(1.0, 1.0, 1.0, 0.3))
-
-            // Kuiper belt
             drawAsteroidBelt(gc, sunX, sunY, 30.0, 50.0, 20000, Color.LIGHTBLUE.deriveColor(1.0, 1.0, 1.0, 0.2))
         }
     }
