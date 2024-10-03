@@ -44,28 +44,18 @@ class StellarSystem {
             })
         }
 
-        futures.forEach { it.get() } // Wait for all force calculations to complete
+        futures.forEach { it.get() }
         return forces
     }
 
     private fun calculateForce(object1: CelestialObject, object2: CelestialObject): Vector3D {
         val distance = object2.position - object1.position
         val distanceSquared = distance.magnitudeSquared()
-
-        // Newtonian gravity
         var forceMagnitude = G * object1.mass * object2.mass / distanceSquared
-
-        // Relativistic correction (Schwarzschild effect)
         val schwarzschildRadius = 2 * G * object2.mass / (c * c)
         forceMagnitude *= (1 - schwarzschildRadius / distance.magnitude())
-
-        // Additional relativistic effects
-        // Orbital precession (Einstein effect)
         val precessionFactor = 1 + (3 * G * object2.mass) / (c * c * distance.magnitude())
-
-        // Gravitational time dilation
         val timeDilationFactor = 1 - (2 * G * object2.mass) / (c * c * distance.magnitude())
-
         forceMagnitude *= precessionFactor * timeDilationFactor
 
         return distance.normalize() * forceMagnitude
@@ -98,7 +88,6 @@ class StellarSystem {
             val a = 1.0 / (2.0 / r.magnitude() - v.magnitudeSquared() / (G * star.mass))
             val e = ((v.cross(r.cross(v)) / (G * star.mass)) - r.normalize()).magnitude()
 
-            // Correct orbit if eccentricity is too high
             if (e > 0.2) {
                 val newV = kotlin.math.sqrt(G * star.mass * (2.0 / r.magnitude() - 1.0 / a))
                 planet.velocity = r.cross(v).normalize().cross(r.normalize()) * newV

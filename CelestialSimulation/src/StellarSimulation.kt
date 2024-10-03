@@ -38,7 +38,7 @@ class StellarSimulation(private val stellarSystem: StellarSystem) {
         val centerX = gc.canvas.width / 2
         val centerY = gc.canvas.height / 2
 
-        labelPositions.clear() // Очищаем список позиций надписей перед каждым кадром
+        labelPositions.clear()
 
         drawAsteroidBelts(gc, centerX, centerY)
         drawOrbits(gc, centerX, centerY)
@@ -47,7 +47,6 @@ class StellarSimulation(private val stellarSystem: StellarSystem) {
             drawCelestialObject(gc, celestialObject, centerX, centerY)
         }
 
-        // Отрисовываем все надписи после отрисовки объектов
         drawLabels(gc)
 
         drawSimulationInfo(gc)
@@ -252,7 +251,7 @@ class StellarSimulation(private val stellarSystem: StellarSystem) {
 
     fun changeTimeScale(factor: Double) {
         timeScale *= factor
-        timeScale = timeScale.coerceIn(1.0, 86400.0 * 365.0) // Limit between 1 second/second and 1 year/second
+        timeScale = timeScale.coerceIn(1.0, 86400.0 * 365.0)
     }
 
     private fun calculateScaleFactor(z: Double): Double {
@@ -277,17 +276,13 @@ class StellarSimulation(private val stellarSystem: StellarSystem) {
     fun zoom(factor: Double, mouseX: Double, mouseY: Double) {
         val oldScaleFactor = scaleFactor
         scaleFactor *= factor
-        scaleFactor = scaleFactor.coerceIn(1e-11, 1e-7) // Limit the scale factor
-
-        // Adjust camera position for zooming relative to cursor
+        scaleFactor = scaleFactor.coerceIn(1e-11, 1e-7)
         cameraX = mouseX - (mouseX - cameraX) * (scaleFactor / oldScaleFactor)
         cameraY = mouseY - (mouseY - cameraY) * (scaleFactor / oldScaleFactor)
-
-        // Adjust object size multiplier based on zoom level
         objectSizeMultiplier = 50.0 * (1e-9 / scaleFactor).pow(0.2)
     }
 
     companion object {
-        const val G = 6.67430e-11 // Gravitational constant
+        const val G = 6.67430e-11
     }
 }

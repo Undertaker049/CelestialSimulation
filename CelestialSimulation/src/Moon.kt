@@ -19,18 +19,15 @@ class Moon(
     }
 
     override fun update(force: Vector3D, deltaTime: Double) {
-        // Обновляем угол орбиты на основе орбитального периода
         val orbitalPeriod = calculateOrbitalPeriod()
         val angularVelocity = 2 * PI / orbitalPeriod
         orbitAngle += angularVelocity * deltaTime
         orbitAngle %= (2 * PI)
 
-        // Обновляем позицию относительно родительской планеты
         val newX = parentPosition.x + orbitRadius * cos(orbitAngle)
         val newY = parentPosition.y + orbitRadius * sin(orbitAngle)
         position = Vector3D(newX, newY, parentPosition.z)
 
-        // Обновляем скорость
         val speed = sqrt(G * parentMass / orbitRadius)
         velocity = Vector3D(
             -speed * sin(orbitAngle),
@@ -38,12 +35,11 @@ class Moon(
             0.0
         )
 
-        // Применяем дополнительную силу (если есть)
         velocity += force / mass * deltaTime
         position += velocity * deltaTime
     }
 
     companion object {
-        const val G = 6.67430e-11 // Гравитационная постоянная
+        const val G = 6.67430e-11
     }
 }
