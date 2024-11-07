@@ -1,2 +1,2 @@
 # Description
-Platform for simulating the physics of star systems
+Platform for 2D simulating the physics of star systems
